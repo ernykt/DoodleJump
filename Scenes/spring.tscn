@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=3 uid="uid://ukje7ka7o3xs"]
+
+[ext_resource type="Script" path="res://Scripts/Spring.gd" id="1_pt8vg"]
+[ext_resource type="Texture2D" uid="uid://cxbnap3pail0m" path="res://Assets/game-tiles.png" id="2_8tk6y"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nmacw"]
+atlas = ExtResource("2_8tk6y")
+region = Rect2(400, 113, 22, 33)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knt71"]
+atlas = ExtResource("2_8tk6y")
+region = Rect2(403, 99, 19, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_j1p08"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nmacw")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knt71")
+}],
+"loop": true,
+"name": &"jumped",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3rxtx"]
+size = Vector2(53, 21.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mjrw6"]
+size = Vector2(53, 16)
+
+[node name="Spring" type="CharacterBody2D"]
+script = ExtResource("1_pt8vg")
+
+[node name="SpringSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_j1p08")
+animation = &"jumped"
+
+[node name="SpringCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3rxtx")
+disabled = true
+
+[node name="JumpingArea" type="Area2D" parent="."]
+
+[node name="JumpingCollision" type="CollisionShape2D" parent="JumpingArea"]
+shape = SubResource("RectangleShape2D_mjrw6")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+
+[connection signal="body_entered" from="JumpingArea" to="." method="_on_jumping_area_body_entered"]
+[connection signal="body_exited" from="JumpingArea" to="." method="_on_jumping_area_body_exited"]
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]

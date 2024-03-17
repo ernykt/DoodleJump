@@ -1,0 +1,93 @@
+[gd_scene load_steps=11 format=3 uid="uid://8spgkfwh20gy"]
+
+[ext_resource type="Texture2D" uid="uid://b7tcaxorc0bdr" path="res://Assets/springshoes-side@2x.png" id="2_fa2se"]
+[ext_resource type="Script" path="res://Scripts/SpringBoots.gd" id="2_qes11"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rahaj"]
+atlas = ExtResource("2_fa2se")
+region = Rect2(0, 96, 60, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6i6lj"]
+atlas = ExtResource("2_fa2se")
+region = Rect2(60, 48, 60, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vwjxg"]
+atlas = ExtResource("2_fa2se")
+region = Rect2(0, 48, 60, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5327j"]
+atlas = ExtResource("2_fa2se")
+region = Rect2(60, 0, 60, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4p0lj"]
+atlas = ExtResource("2_fa2se")
+region = Rect2(0, 0, 60, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0smce"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rahaj")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6i6lj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vwjxg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5327j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rahaj")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4p0lj")
+}],
+"loop": true,
+"name": &"notCollected",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3rxtx"]
+size = Vector2(53, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mjrw6"]
+size = Vector2(53.5, 20)
+
+[node name="SpringBoots" type="CharacterBody2D"]
+script = ExtResource("2_qes11")
+
+[node name="SpringBootSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 12)
+sprite_frames = SubResource("SpriteFrames_0smce")
+animation = &"notCollected"
+
+[node name="SpringCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3rxtx")
+one_way_collision = true
+
+[node name="SpringBootsJumping" type="Area2D" parent="."]
+
+[node name="BootsCollision" type="CollisionShape2D" parent="SpringBootsJumping"]
+shape = SubResource("RectangleShape2D_mjrw6")
+one_way_collision = true
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+scale = Vector2(2.675, 1)
+
+[node name="BootTimer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="SpringBootsJumping" to="." method="_on_spring_boots_jumping_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]
+[connection signal="timeout" from="BootTimer" to="." method="_on_boot_timer_timeout"]

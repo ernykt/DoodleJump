@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://fyao4egx8go0"]
+
+[ext_resource type="Texture2D" uid="uid://d0pe0s3fhw6hs" path="res://Assets/bck.png" id="1_q5rwr"]
+
+[node name="Background" type="CanvasLayer"]
+
+[node name="Scroller" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="Scroller"]
+motion_mirroring = Vector2(0, 100)
+
+[node name="BackImg" type="Sprite2D" parent="Scroller/ParallaxLayer"]
+position = Vector2(400, 301)
+scale = Vector2(2.50313, 1.17187)
+texture = ExtResource("1_q5rwr")

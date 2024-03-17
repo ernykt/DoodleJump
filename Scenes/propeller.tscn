@@ -1,0 +1,80 @@
+[gd_scene load_steps=10 format=3 uid="uid://b65lr5k8oflmc"]
+
+[ext_resource type="Script" path="res://Scripts/Propeller.gd" id="1_0rugg"]
+[ext_resource type="Texture2D" uid="uid://7naq8jn17nkh" path="res://Assets/propeller.png" id="2_uql4g"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_afnfs"]
+atlas = ExtResource("2_uql4g")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jny55"]
+atlas = ExtResource("2_uql4g")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gfig4"]
+atlas = ExtResource("2_uql4g")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_je3qt"]
+atlas = ExtResource("2_uql4g")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4q17a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_afnfs")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jny55")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gfig4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_je3qt")
+}],
+"loop": true,
+"name": &"Picked",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ojhm"]
+size = Vector2(21, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pdav0"]
+size = Vector2(25, 22)
+
+[node name="Propeller" type="CharacterBody2D"]
+script = ExtResource("1_0rugg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visibility_layer = 1023
+sprite_frames = SubResource("SpriteFrames_4q17a")
+animation = &"Picked"
+frame = 2
+frame_progress = 0.451603
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 4)
+shape = SubResource("RectangleShape2D_2ojhm")
+disabled = true
+
+[node name="PickUpArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickUpArea"]
+position = Vector2(-0.5, 5)
+shape = SubResource("RectangleShape2D_pdav0")
+
+[node name="PowerUpTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="timeout" from="PowerUpTimer" to="." method="_on_power_up_timer_timeout"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

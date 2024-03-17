@@ -1,0 +1,76 @@
+[gd_scene load_steps=10 format=3 uid="uid://cskckm81rbfk7"]
+
+[ext_resource type="Script" path="res://Scripts/platform_tmp.gd" id="2_2xmac"]
+[ext_resource type="Texture2D" uid="uid://cxbnap3pail0m" path="res://Assets/game-tiles.png" id="2_tdn8h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hwqhj"]
+size = Vector2(59, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ev340"]
+atlas = ExtResource("2_tdn8h")
+region = Rect2(0, 91, 60, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_twm02"]
+atlas = ExtResource("2_tdn8h")
+region = Rect2(0, 115, 60, 33)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lkiat"]
+atlas = ExtResource("2_tdn8h")
+region = Rect2(0, 148, 60, 33)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ynli2"]
+atlas = ExtResource("2_tdn8h")
+region = Rect2(0, 73, 60, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_axvl1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ev340")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_twm02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lkiat")
+}],
+"loop": false,
+"name": &"Break",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ynli2")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d1y07"]
+size = Vector2(59, 14.5)
+
+[node name="PlatformTmp" type="CharacterBody2D"]
+script = ExtResource("2_2xmac")
+
+[node name="PlatformCollision" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_hwqhj")
+disabled = true
+one_way_collision = true
+
+[node name="PlatformSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_axvl1")
+animation = &"Idle"
+
+[node name="PlatformArea" type="Area2D" parent="."]
+
+[node name="AreaCollision" type="CollisionShape2D" parent="PlatformArea"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_d1y07")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="animation_finished" from="PlatformSprite" to="." method="_on_platform_sprite_animation_finished"]
+[connection signal="body_entered" from="PlatformArea" to="." method="_on_platform_area_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
